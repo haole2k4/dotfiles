@@ -1,22 +1,49 @@
-#ZINIT CONFIGURATIONS
+# ============================================================
+# PATH (typeset -U tự động loại bỏ đường dẫn trùng lặp)
+# ============================================================
+typeset -U path PATH
+
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export JAVA_HOME="/usr/lib/jvm/java-25-openjdk"
+
+path=(
+  "$HOME/.local/bin"
+  "$HOME/.opencode/bin"
+  "$JAVA_HOME/bin"
+  "$PNPM_HOME/bin"
+  $path
+)
+
+# ============================================================
+# ZINIT & PLUGINS
+# ============================================================
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+[ ! -d "$ZINIT_HOME" ] && mkdir -p "$(dirname "$ZINIT_HOME")"
+[ ! -d "$ZINIT_HOME/.git" ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
-#zinit plugins
-zinit light zsh-users/zsh-syntax-highlighting #load syntax-highlighting
-zinit light zsh-users/zsh-autosuggestions #load auto-suggestions
-zinit light zsh-users/zsh-completions #load completions
+# 1. Nạp completions TRƯỚC compinit
+zinit light zsh-users/zsh-completions
 
-#load completions
-autoload -U compinit && compinit
+# 2. compinit có cache: chỉ quét lại .zcompdump nếu cũ hơn 24h (bật extendedglob cục bộ)
+autoload -Uz compinit
+() {
+  setopt local_options extendedglob
+  if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+    compinit
+  else
+    compinit -C
+  fi
+}
 
-# STARSHIP CONFIGURATIONS
-export STARSHIP_CONFIG="$HOME/.config/starship.toml"
-eval "$(starship init zsh)"
+# 3. autosuggestions nạp sau compinit
+zinit light zsh-users/zsh-autosuggestions
 
-#HISTORY
+# ============================================================
+# STYLING & HISTORY
+# ============================================================
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
 HISTSIZE=2500
 HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
@@ -29,44 +56,32 @@ setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
 
-#STYLING
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-
+# ============================================================
+# NODE: dùng fnm mặc định, nvm chỉ nạp khi gõ lệnh `nvm` (lazy-load)
+# ============================================================
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm() {
+  unset -f nvm
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  nvm "$@"
+}
 
-# pnpm
-export PNPM_HOME='/home/haole2k4/.local/share/pnpm'
-case ":$PATH:" in
-  ":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
-esac
-# pnpm end
-
-#java 
-export JAVA_HOME="/usr/lib/jvm/java-25-openjdk"
-export PATH="$JAVA_HOME/bin:$PATH"
-#java end
-
-export PATH="$HOME/.local/bin:$PATH"
-
-# fnm
-FNM_PATH="/home/haole2k4/.local/share/fnm"
+FNM_PATH="$HOME/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
-  export PATH="$FNM_PATH:$PATH"
-  eval "$(fnm env --shell zsh)"
+  path=("$FNM_PATH" $path)
+  eval "$(fnm env --use-on-cd --shell zsh)"
 fi
 
-# opencode
-export PATH=/home/haole2k4/.opencode/bin:$PATH
-export PATH="$HOME/.opencode/bin:$PATH"
+# ============================================================
+# PROMPT (Starship)
+# ============================================================
+export STARSHIP_CONFIG="$HOME/.config/starship.toml"
+eval "$(starship init zsh)"
 
-
-# Added by Antigravity CLI installer
-export PATH="/home/haole2k4/.local/bin:$PATH"
-
-# --- GIT WORKTREE HELPERS ---
+# ============================================================
+# GIT WORKTREE HELPERS
+# ============================================================
 alias wtls="git worktree list"
 
 wta() {
@@ -96,7 +111,7 @@ wta() {
     git worktree add -b "$branch" "$target_dir"
   fi
 
-  # Copy .env files nếu có (bật null_glob của zsh để không báo lỗi khi không có file .env)
+  # Copy .env files nếu có (null_glob để không báo lỗi khi không có file .env)
   setopt local_options null_glob
   local env_files=("$repo_root"/.env*)
   if (( ${#env_files[@]} > 0 )); then
@@ -137,3 +152,8 @@ wtdone() {
     return 1
   fi
 }
+
+# ============================================================
+# SYNTAX HIGHLIGHTING (Luôn nạp ở cuối file để bọc mọi widget)
+# ============================================================
+zinit light zsh-users/zsh-syntax-highlighting
