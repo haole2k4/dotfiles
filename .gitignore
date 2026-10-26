@@ -1,0 +1,54 @@
+# =============================================================================
+# 1. SECRETS, CREDENTIALS & PRIVATE KEYS (TUYỆT ĐỐI KHÔNG COMMIT)
+# =============================================================================
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.priv
+*.der
+*.p12
+*.pfx
+*.gpg
+*.asc
+id_rsa*
+id_ed25519*
+known_hosts
+authorized_keys
+hosts.yml
+credentials*
+*secret*
+*token*
+
+# =============================================================================
+# 2. SHELL HISTORY, RUNTIME, CACHE & STATE
+# =============================================================================
+.*_history
+.zsh_history
+.bash_history
+.mysql_history
+.psql_history
+.zcompdump*
+.viminfo
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+*.log
+.cache/
+.local/share/
+.local/state/
+
+# =============================================================================
+# 3. LOCKFILES & PLUGIN BINARIES
+# =============================================================================
+lazy-lock.json
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+Cargo.lock
+node_modules/
+.DS_Store
+Thumbs.db
