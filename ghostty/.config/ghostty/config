@@ -1,10 +1,5 @@
 # This is the configuration file for Ghostty.
 #
-# This template file has been automatically created at the following
-# path since Ghostty couldn't find any existing config files on your system:
-#
-#   /home/haole2k4/.config/ghostty/config
-#
 # The template does not set any default options, since Ghostty ships
 # with sensible defaults for all options. Users should only need to set
 # options that they want to change from the default.
@@ -42,10 +37,10 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200m
 theme=light:Catppuccin Latte,dark:Catppuccin Mocha
-font-size=12
+font-size=14
 alpha-blending=native
 cursor-style=block
-background-opacity=0.97
+background-opacity=0.95
 cursor-style-blink=true
 auto-update=download
 auto-update-channel=tip
@@ -55,6 +50,6 @@ font-family="GeistMono Nerd Font Mono"
 window-decoration=none
 window-width=148
 window-height=34
-window-padding-x=16
-window-padding-y=16
+window-padding-x=10
+window-padding-y=10
 window-padding-balance=true

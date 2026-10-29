@@ -4,12 +4,12 @@
 typeset -U path PATH
 
 export PNPM_HOME="$HOME/.local/share/pnpm"
-export JAVA_HOME="/usr/lib/jvm/java-25-openjdk"
+[ -d "/usr/lib/jvm/java-25-openjdk" ] && export JAVA_HOME="/usr/lib/jvm/java-25-openjdk"
 
 path=(
   "$HOME/.local/bin"
   "$HOME/.opencode/bin"
-  "$JAVA_HOME/bin"
+  ${JAVA_HOME:+"$JAVA_HOME/bin"}
   "$PNPM_HOME/bin"
   $path
 )
