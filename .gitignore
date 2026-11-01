@@ -20,6 +20,7 @@ hosts.yml
 credentials*
 *secret*
 *token*
+*.local
 
 # =============================================================================
 # 2. SHELL HISTORY, RUNTIME, CACHE & STATE

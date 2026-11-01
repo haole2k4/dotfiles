@@ -1,5 +1,5 @@
 # Danh sách các module GNU Stow quản lý dotfiles trong ~/
-STOW_MODULES := zsh ghostty starship tmux git mpv vim nvim
+STOW_MODULES := zsh ghostty starship tmux git mpv vim nvim niri dms
 TARGET_DIR   := $(HOME)
 
 .PHONY: help stow adopt unstow

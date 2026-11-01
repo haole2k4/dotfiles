@@ -17,7 +17,9 @@ dotfiles/
 ├── git/                 # ~/.gitconfig
 ├── mpv/                 # ~/.config/mpv/ (mpv.conf & uosc.conf)
 ├── vim/                 # ~/.vimrc
-└── nvim/                # ~/.config/nvim/
+├── nvim/                # ~/.config/nvim/
+├── niri/                # ~/.config/niri/ (Scrollable-tiling Wayland compositor & dms integration)
+└── dms/                 # ~/.config/dms/ (Dux Shell settings, styling & environment)
 ```
 
 ## Cách sử dụng
