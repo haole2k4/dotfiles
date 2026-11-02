@@ -19,7 +19,8 @@ dotfiles/
 ├── vim/                 # ~/.vimrc
 ├── nvim/                # ~/.config/nvim/
 ├── niri/                # ~/.config/niri/ (Scrollable-tiling Wayland compositor & dms integration)
-└── dms/                 # ~/.config/dms/ (Dux Shell settings, styling & environment)
+├── dms/                 # ~/.config/dms/ (Dux Shell settings, styling & environment)
+└── tuios/               # ~/.config/tuios/ (TUI OS multiplexer & workspace config)
 ```
 
 ## Cách sử dụng
